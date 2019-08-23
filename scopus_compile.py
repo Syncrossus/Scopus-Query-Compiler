@@ -32,11 +32,11 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
             print("line_break_positions: ", [self.view.rowcol(i) for i in line_break_positions])
             # isolating all the regions between line breaks
             for i in range(len(line_break_positions) - 1):
-                print(self.view.rowcol(region.a + line_break_positions[i] + 1),
-                      self.view.rowcol(region.a + line_break_positions[i + 1]))
+                print(self.view.rowcol(region.begin() + line_break_positions[i] + 1),
+                      self.view.rowcol(region.begin() + line_break_positions[i + 1]))
                 new_selection.append(Region(
-                    region.a + line_break_positions[i] + 1,
-                    region.a + line_break_positions[i + 1]))
+                    region.begin() + line_break_positions[i] + 1,
+                    region.begin() + line_break_positions[i + 1]))
 
         # overwriting old selection
         selection.clear()
@@ -58,7 +58,7 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         for region in selection:
             text = self.view.substr(region)
             print("before: ", text)
-            current_line_number = self.view.rowcol(region.a)[0]
+            current_line_number = self.view.rowcol(region.begin())[0]
             # getting each occurence of the form "#12"
             # which references a line in the file
             reference = line_ref_pattern.search(text)
@@ -78,8 +78,10 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
 
                 # replacing the reference with its target
                 text = (text[:reference.start()] + '(' +
-                        self.view.substr(Region(target_line_start,
-                                                target_line_end)) +
+                        self.view.substr(
+                            self.remove_comments(
+                                Region(target_line_start,
+                                       target_line_end))) +
                         ')' + text[reference.end():])
                 reference = line_ref_pattern.search(text)
             print("after: ", text)
@@ -92,6 +94,6 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         print(text)
         comment_start = text.find('%')
         if comment_start != -1:
-            return Region(region.a, region.a + comment_start)
+            return Region(region.begin(), region.begin() + comment_start)
         else:
             return region
