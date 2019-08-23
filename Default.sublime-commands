@@ -1,0 +1,6 @@
+[
+    {
+        "caption": "Scopus Compile: Compile Query",
+        "command": "compile_scopus_query"
+    }
+]
