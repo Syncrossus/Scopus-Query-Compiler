@@ -17,8 +17,8 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         # splitting lines over line breaks
         # print("splitting lines over line breaks")
         for region in selection:
-            region = self.fix_empty_region(region)
-            new_selection.append(self.split_line_breaks(region))
+            # region = self.fix_empty_region(region)
+            new_selection.extend(self.split_line_breaks(region))
 
         # overwriting old selection
         selection.clear()
@@ -28,8 +28,8 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         # unselecting comments
         # print("unselecting comments")
         for region in selection:
-            region = self.fix_empty_region(region)
-            new_selection.extend(self.remove_comments(region))
+            # region = self.fix_empty_region(region)
+            new_selection.append(self.remove_comments(region))
 
         # overwriting old selection
         selection.clear()
@@ -38,7 +38,7 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         # starting the compilation process
         # print("compiling")
         for region in selection:
-            region = self.fix_empty_region(region)
+            # region = self.fix_empty_region(region)
             self.view.replace(edit, region, self.compile_query(region))
 
     def compile_query(self, region):
@@ -55,7 +55,8 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
 
             if target_line_number == current_line_number:
                 raise RecursionError(
-                    "Self-referencing query would have caused infinite recursion.")
+                    "Self-referencing query would have\
+                 caused infinite recursion.")
 
             target_line_start = self.view.text_point(target_line_number, 0)
             target_line_end = self.view.text_point(
@@ -79,7 +80,8 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
             caret_pos = self.view.rowcol(region.a)
             print("caret_pos: ", caret_pos)
             print("region begin: ", self.view.text_point(caret_pos[0], 0))
-            print("region end: ", self.view.text_point(caret_pos[0] + 1, 0) - 1)
+            print("region end: ", self.view.text_point(
+                caret_pos[0] + 1, 0) - 1)
             return Region(
                 self.view.text_point(caret_pos[0], 0),
                 self.view.text_point(caret_pos[0] + 1, 0) - 1)
@@ -115,7 +117,9 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         # isolating all the regions between line breaks
         for i in range(len(line_break_positions) - 1):
             # print(self.view.rowcol(region.begin() + line_break_positions[i] + 1),
-                  self.view.rowcol(region.begin() + line_break_positions[i + 1]))
+            #       self.view.rowcol(region.begin() + line_break_positions[i + 1]))
             new_regions.append(Region(
                 region.begin() + line_break_positions[i] + 1,
                 region.begin() + line_break_positions[i + 1]))
+
+        return new_regions
