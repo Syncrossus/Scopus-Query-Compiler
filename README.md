@@ -18,8 +18,10 @@ The number you type after `#` is simply the number of the line number of the tar
 
 You can theoretically nest as many query references as you want, as long as you have no circular or self-references. Self-references are detected and cause an exception, but circular references are as of yet unhandled.
 
+Example:  
+selecting  
+![](https://user-images.githubusercontent.com/12431317/64166237-00077780-ce47-11e9-9fae-bfe18c592713.png)
+![](https://user-images.githubusercontent.com/12431317/64166238-00077780-ce47-11e9-937d-3e9d0f678192.png)
+![](https://user-images.githubusercontent.com/12431317/64166239-00077780-ce47-11e9-845d-a330f1b6b586.png)
 
-![](https://raw.githubusercontent.com/Syncrossus/Garbage-File-Storage/master/scopus_compile_1.png?token=AC627VIV64UBBLM3YJFP7L25NYZD4)
-![](https://raw.githubusercontent.com/Syncrossus/Garbage-File-Storage/master/scopus_compile_2.png?token=AC627VO3N7VG7KGN5BHLSFS5NYZGW)
-![](https://raw.githubusercontent.com/Syncrossus/Garbage-File-Storage/master/scopus_compile_3.png?token=AC627VNQIVHK3YTDDUQZ76K5NYZIS)
-
+[![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-2.png)](http://www.wtfpl.net/)
