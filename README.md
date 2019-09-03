@@ -1,5 +1,7 @@
 # Scopus Query Compiler
 
+**This package works best in conjunction with the Scopus-Syntax-Highlighter package.**
+
 Scopus is a database of scientific articles that provides an advanced search function.
 
 When editing search queries, this package allows you to create a query referencing another query. That is, given the following queries:
