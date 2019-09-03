@@ -20,6 +20,8 @@ The number you type after `#` is simply the number of the line number of the tar
 
 You can theoretically nest as many query references as you want, as long as you have no circular or self-references. Self-references are detected and cause an exception, but circular references are as of yet unhandled.
 
+% denotes a comment and is ignored.
+
 Example:  
 We want to compile line 15, which references lines 1, 7, 12, 13 and 14, which themselves reference other queries.
 ![](https://user-images.githubusercontent.com/12431317/64166237-00077780-ce47-11e9-9fae-bfe18c592713.png)
