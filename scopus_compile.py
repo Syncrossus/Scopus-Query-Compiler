@@ -16,6 +16,8 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         # splitting lines over line breaks
         for region in selection:
             region = self.fix_empty_region(region)
+            if self.view.substr(region) == '':
+                continue
             new_selection.extend(self.split_line_breaks(region))
 
         # overwriting old selection
@@ -26,6 +28,8 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         # unselecting comments
         for region in selection:
             region = self.fix_empty_region(region)
+            if self.view.substr(region) == '':
+                continue
             new_selection.append(self.remove_comments(region))
 
         # overwriting old selection
@@ -35,6 +39,8 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         # starting the compilation process
         for region in selection:
             region = self.fix_empty_region(region)
+            if self.view.substr(region) == '':
+                continue
             self.view.replace(edit, region, self.compile_query(region))
 
     def compile_query(self, region):
