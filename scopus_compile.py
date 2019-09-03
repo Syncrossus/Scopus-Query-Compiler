@@ -10,14 +10,12 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         # compiling ahead of time regex for recognizing query references
         self.line_ref_pattern = re.compile(r"#[0-9]+")
 
-        # print("running")
         selection = self.view.sel()
         new_selection = []
 
         # splitting lines over line breaks
-        # print("splitting lines over line breaks")
         for region in selection:
-            # region = self.fix_empty_region(region)
+            region = self.fix_empty_region(region)
             new_selection.extend(self.split_line_breaks(region))
 
         # overwriting old selection
@@ -26,9 +24,8 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         new_selection = []
 
         # unselecting comments
-        # print("unselecting comments")
         for region in selection:
-            # region = self.fix_empty_region(region)
+            region = self.fix_empty_region(region)
             new_selection.append(self.remove_comments(region))
 
         # overwriting old selection
@@ -36,14 +33,12 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         selection.add_all(new_selection)
 
         # starting the compilation process
-        # print("compiling")
         for region in selection:
-            # region = self.fix_empty_region(region)
+            region = self.fix_empty_region(region)
             self.view.replace(edit, region, self.compile_query(region))
 
     def compile_query(self, region):
         text = self.view.substr(region)
-        # print("before: ", text)
         current_line_number = self.view.rowcol(region.begin())[0]
         # getting each occurence of the form "#12"
         # which references a line in the file
@@ -70,7 +65,6 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
                                    target_line_end))) +
                     ')' + text[reference.end():])
             reference = self.line_ref_pattern.search(text)
-        # print("after: ", text)
         return text
 
     def fix_empty_region(self, region):
@@ -78,17 +72,12 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
             return region
         else:
             caret_pos = self.view.rowcol(region.a)
-            print("caret_pos: ", caret_pos)
-            print("region begin: ", self.view.text_point(caret_pos[0], 0))
-            print("region end: ", self.view.text_point(
-                caret_pos[0] + 1, 0) - 1)
             return Region(
                 self.view.text_point(caret_pos[0], 0),
                 self.view.text_point(caret_pos[0] + 1, 0) - 1)
 
     def remove_comments(self, region):
         text = self.view.substr(region)
-        # print(text)
         comment_start = text.find('%')
         if comment_start != -1:
             return Region(region.begin(), region.begin() + comment_start)
@@ -97,7 +86,6 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
 
     def split_line_breaks(self, region):
         text = self.view.substr(region)
-        # print(text)
         # adding a virtual line break before the region
         # because we take the regions between line breaks
         line_break_positions = [-1]
@@ -111,13 +99,9 @@ class CompileScopusQueryCommand(sublime_plugin.TextCommand):
         if text[-1] != '\n':
             line_break_positions.append(len(text) + 1)
 
-        # print("line_break_positions: ", [self.view.rowcol(i) for i in line_break_positions])
-
         new_regions = []
         # isolating all the regions between line breaks
         for i in range(len(line_break_positions) - 1):
-            # print(self.view.rowcol(region.begin() + line_break_positions[i] + 1),
-            #       self.view.rowcol(region.begin() + line_break_positions[i + 1]))
             new_regions.append(Region(
                 region.begin() + line_break_positions[i] + 1,
                 region.begin() + line_break_positions[i + 1]))
