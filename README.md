@@ -18,7 +18,7 @@ by typing `#1 AND #2` and then using the "Scopus Compile: Compile Query" command
 
 The number you type after `#` is simply the number of the line number of the targeted query.
 
-You can theoretically nest as many query references as you want, as long as you have no circular or self-references. Self-references are detected and cause an exception, but circular references are as of yet unhandled.
+You can theoretically nest as many query references as you want, as long as you have no circular or self-references (these are detected and cause an exception).
 
 % denotes a comment and is ignored.
 
