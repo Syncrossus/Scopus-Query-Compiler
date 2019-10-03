@@ -4,6 +4,11 @@ import sublime_plugin
 from sublime import Region
 
 
+class RecursionError(Exception):
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
+
+
 class CompileScopusQueryCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
